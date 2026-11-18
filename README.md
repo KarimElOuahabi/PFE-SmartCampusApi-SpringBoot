@@ -50,15 +50,25 @@ Most resources expose the usual `GET`, `POST`, `PUT /{id}` and `DELETE /{id}`, p
 
 Requirements: JDK 21 and a PostgreSQL database.
 
-1. Create a database and set the connection in `src/main/resources/application.properties` (defaults to `postgres` on `localhost:5432`).
-2. Set your own `jwt.secret` there. The value in the repo is a development placeholder, do not reuse it.
+1. Create a PostgreSQL database.
+2. Set the environment variables below. `JWT_SECRET` is required, the others have local defaults.
 3. Start the API:
 
 ```bash
-./gradlew bootRun    # http://localhost:8080
+export JWT_SECRET=$(openssl rand -base64 64)
+export DB_PASSWORD=postgres        # optional, default: postgres
+./gradlew bootRun                  # http://localhost:8080
 ```
 
-Tables are created automatically (`spring.jpa.hibernate.ddl-auto=update`). Run the tests with `./gradlew test`.
+| Variable | Default |
+| --- | --- |
+| `JWT_SECRET` | none, required (Base64 string, 64+ bytes) |
+| `JWT_EXPIRATION` | `3600000` (ms) |
+| `DB_URL` | `jdbc:postgresql://localhost:5432/postgres` |
+| `DB_USERNAME` | `postgres` |
+| `DB_PASSWORD` | `postgres` |
+
+Tables are created automatically (`spring.jpa.hibernate.ddl-auto=update`). Run the tests with `./gradlew test` (set `JWT_SECRET` first).
 
 ## Notes
 
