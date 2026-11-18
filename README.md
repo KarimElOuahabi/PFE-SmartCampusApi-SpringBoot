@@ -1,75 +1,33 @@
 # Smart Campus: Backend
 
-REST API for **Smart Campus**, my Licence final-year project (PFE). It powers a campus management portal where administrators, teachers and students manage academic life in one place: schedules, assignments, marks, administrative documents and reclamations (complaints/requests).
+REST API for **Smart Campus**, my Licence final-year project (PFE). Administrators, teachers and students manage schedules, assignments, marks, administrative documents and reclamations (requests and complaints) in one place.
 
-The web client lives in [PFE-SmartCampusClient-React](https://github.com/KarimElOuahabi/PFE-SmartCampusClient-React).
+The web client is [PFE-SmartCampusClient-React](https://github.com/KarimElOuahabi/PFE-SmartCampusClient-React).
 
 ## Features
 
-- **Three user types** (`Admin`, `Teacher`, `Student`) with JWT authentication and BCrypt-hashed passwords.
-- **Schedules:** timetables per field and semester.
-- **Assignments:** teachers publish assignments, students submit solutions.
-- **Marks:** teachers enter marks per subject and session, students read their own.
-- **Reclamations:** students submit requests and administrators handle them.
-- **Administrative documents:** students request official documents (`AdRequest`), administrators process them.
-- **Academic structure management:** CRUD for departments, fields (programmes), subjects, students, teachers and admins.
+- Three user types (`Admin`, `Teacher`, `Student`) with JWT login.
+- Schedules per field and semester.
+- Assignments, with student submissions.
+- Marks per subject and session.
+- Reclamations submitted by students and handled by administrators.
+- Administrative document requests.
+- Management of departments, fields, subjects, students, teachers and admins.
 
 ## Tech stack
 
-Java 21 · Spring Boot 3.4 · Spring Web · Spring Data JPA · Spring Security · JWT (jjwt) · PostgreSQL · Lombok · Gradle
+Java 21 · Spring Boot · Spring Security · JWT · Spring Data JPA · PostgreSQL · Gradle
 
-## Project structure
+## Run it
 
-```
-src/main/java/com/school/
-├── config/        security, JWT filter and utils, CORS, JPA auditing
-├── controllers/   REST controllers, one per resource
-├── dao/           Spring Data repositories
-├── dtos/          request/response objects
-├── entities/      JPA entities
-├── enumeration/   user types, semesters, statuses, document types
-└── services/      user details service
-```
+You need JDK 21 and a PostgreSQL database.
 
-## API overview
-
-| Resource | Base path |
-| --- | --- |
-| Authentication | `/authenticate` |
-| Admins, teachers, students | `/admins`, `/teachers`, `/students` |
-| Departments, fields, subjects | `/departments`, `/fields`, `/subjects` |
-| Schedules | `/schedules` |
-| Assignments and solutions | `/assignments`, `/assignments-solutions` |
-| Marks | `/marks` |
-| Reclamations | `/reclamations` |
-| Administrative document requests | `/adrequests` |
-
-Most resources expose the usual `GET`, `POST`, `PUT /{id}` and `DELETE /{id}`, plus a few lookups such as `student/{studentId}` or `subject/{subjectId}`.
-
-## Running locally
-
-Requirements: JDK 21 and a PostgreSQL database.
-
-1. Create a PostgreSQL database.
-2. Copy `.env.example` to `.env` (git-ignored, loaded automatically) and fill in `JWT_SECRET`, or export the variables below yourself. `JWT_SECRET` is required, the others have local defaults.
+1. Copy `.env.example` to `.env` and set `JWT_SECRET` to a long random Base64 string, for example `openssl rand -base64 -A 64`.
+2. Adjust `DB_URL`, `DB_USERNAME` and `DB_PASSWORD` if your database is not the local default.
 3. Start the API:
 
 ```bash
-export JWT_SECRET=$(openssl rand -base64 -A 64)
-export DB_PASSWORD=postgres        # optional, default: postgres
-./gradlew bootRun                  # http://localhost:8080
+./gradlew bootRun
 ```
 
-| Variable | Default |
-| --- | --- |
-| `JWT_SECRET` | none, required (Base64 string, 64+ bytes) |
-| `JWT_EXPIRATION` | `3600000` (ms) |
-| `DB_URL` | `jdbc:postgresql://localhost:5432/postgres` |
-| `DB_USERNAME` | `postgres` |
-| `DB_PASSWORD` | `postgres` |
-
-Tables are created automatically (`spring.jpa.hibernate.ddl-auto=update`). Run the tests with `./gradlew test` (set `JWT_SECRET` first).
-
-## Notes
-
-- All routes are currently open at the HTTP layer (`permitAll`) and CORS allows any origin. Tighten both before any real deployment.
+It runs on `http://localhost:8080` and creates the tables automatically.
