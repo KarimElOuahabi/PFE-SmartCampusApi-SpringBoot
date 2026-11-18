@@ -51,7 +51,7 @@ Most resources expose the usual `GET`, `POST`, `PUT /{id}` and `DELETE /{id}`, p
 Requirements: JDK 21 and a PostgreSQL database.
 
 1. Create a PostgreSQL database.
-2. Set the environment variables below. `JWT_SECRET` is required, the others have local defaults.
+2. Copy `.env.example` to `.env` (git-ignored, loaded automatically) and fill in `JWT_SECRET`, or export the variables below yourself. `JWT_SECRET` is required, the others have local defaults.
 3. Start the API:
 
 ```bash
