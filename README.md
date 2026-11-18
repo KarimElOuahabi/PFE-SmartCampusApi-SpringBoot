@@ -55,7 +55,7 @@ Requirements: JDK 21 and a PostgreSQL database.
 3. Start the API:
 
 ```bash
-export JWT_SECRET=$(openssl rand -base64 64)
+export JWT_SECRET=$(openssl rand -base64 -A 64)
 export DB_PASSWORD=postgres        # optional, default: postgres
 ./gradlew bootRun                  # http://localhost:8080
 ```
